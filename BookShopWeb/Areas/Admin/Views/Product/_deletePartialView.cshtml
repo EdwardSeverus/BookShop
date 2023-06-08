@@ -1,0 +1,20 @@
+﻿@model Product
+<div class="modal fade" id="deleteProductModal-@Model.Id" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Delete @Model.Title ?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input asp-for="ImageUrl" hidden />
+                <img src="@Model.ImageUrl" style="display:block;height:300px;margin:auto;" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
+                    <button type="submit" class="btn btn-danger">Yes,Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

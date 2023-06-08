@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Product";
+}
+<partial name="_Notification" />
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Product List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-area="Admin" asp-controller="Product" asp-action="Upsert" class="btn btn-primary">Create a Product</a>
+        </div>
+    </div>
+    <br />
+    <table class="table table-bordered table-striped" margin:auto">
+        <thead>
+            <tr>
+                <th>
+                    Product Title
+                </th>
+                <th>
+                    Author
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>
+                        @obj.Title
+                    </td>
+                    <td>
+                        @obj.Author
+                    </td>
+                    <td>
+                        @obj.Category.Name
+                    </td>
+                    <td>
+                        @obj.Price
+                    </td>
+
+                    <td width="10%">
+                        <div class="w-100 btn-group " role="group">
+                            <a asp-area="Admin" asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-outline-primary mx-2"><i class="bi bi-pencil-square"></i></a>
+                            <button type="button" class="btn btn-outline-danger mx-2" data-bs-toggle="modal" data-bs-target="@("#deleteProductModal-" + obj.Id)"><i class="bi bi-trash-fill"></i></button>
+                            @await Html.PartialAsync("_deletePartialView",obj)
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
