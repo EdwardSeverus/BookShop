@@ -12,8 +12,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServe
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-builder.Services.AddDefaultIdentity<IdentityUser>()
+builder.Services.AddDefaultIdentity<IdentityUser>().AddDefaultTokenProviders()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddControllersWithViews();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
