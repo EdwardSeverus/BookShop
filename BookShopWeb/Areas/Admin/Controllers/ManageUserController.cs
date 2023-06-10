@@ -72,6 +72,25 @@ namespace BookShopWeb.Areas.Admin.Controllers
             return View(userRoleVM);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserRoleVM userRoleVM)
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync (userRoleVM.Id);
+            user.FirstName = userRoleVM.FirstName;
+            user.LastName = userRoleVM.LastName;
+            user.Email = userRoleVM.Email;
+
+            await _userManager.UpdateAsync(user);
+
+            IList<string> userRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, userRoles);
+
+            // Assign the new role to the user
+            await _userManager.AddToRoleAsync(user, userRoleVM.Role);
+
+
+            return RedirectToAction("Index");
+        }
 
     }
 }
