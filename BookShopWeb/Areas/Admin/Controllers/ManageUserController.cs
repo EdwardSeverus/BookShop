@@ -52,10 +52,24 @@ namespace BookShopWeb.Areas.Admin.Controllers
         }
 
 
+        [HttpGet]
         public async Task<IActionResult> Edit(string Id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(Id);
-            return View(user);
+            IEnumerable<IdentityRole> roles = _roleManager.Roles; // Retrieve all available roles
+
+            UserRoleVM userRoleVM = new UserRoleVM
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
+            };
+
+            ViewBag.Roles = new SelectList(roles, "Name", "Name", userRoleVM.Role);
+
+            return View(userRoleVM);
         }
 
 
