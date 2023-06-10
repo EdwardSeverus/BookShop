@@ -13,13 +13,11 @@ namespace BookShopWeb.Areas.Customer.Controllers
     [Area("Customer")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public HomeController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
-            _logger = logger;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
