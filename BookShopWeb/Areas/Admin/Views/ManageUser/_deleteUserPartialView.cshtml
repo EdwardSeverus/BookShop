@@ -1,7 +1,6 @@
 ﻿@model ApplicationUser
 @using BookShop.Models.ViewModels;
 
-
 <div class="modal fade" id="deleteUserModal-@Model.Id" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -14,13 +13,13 @@
                 <input asp-for="ImageUrl" hidden />
                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
                 {
-                    <img src="@Model.ImageUrl" style="display:block;height:300px;margin:auto;" />
+                        <img src="@Model.ImageUrl" style="display:block;height:300px;margin:auto;" />
                 }
                 else
                 {
-                    <img src="/images/default.png" style="display:block;height:300px;margin:auto;" />
+                        <img src="/images/default.png" style="display:block;height:300px;margin:auto;" />
                 }
-
+                <h5 style="margin:20px;">Are you sure?</h5>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i></button>
                     <button type="submit" class="btn btn-danger">Yes,Delete</button>

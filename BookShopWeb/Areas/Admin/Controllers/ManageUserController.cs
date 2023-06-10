@@ -29,26 +29,21 @@ namespace BookShopWeb.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public IActionResult Delete(string userId)
+        public async Task<IActionResult> Delete(ApplicationUser user)
         {
-            var user = _userManager.FindByIdAsync(userId).Result;
-            if (user != null)
-            {
-                var result = _userManager.DeleteAsync(user).Result;
+
+            string userId = user.Id;
+                ApplicationUser userFromdb =await _userManager.FindByIdAsync(userId);
+            
+                var result = _userManager.DeleteAsync(userFromdb).Result;
                 if (result.Succeeded)
                 {
+                    TempData["success"] = "User Deleted Succesfully";
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "User deletion failed.");
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("", "User not found.");
-            }
-            return RedirectToAction("Index");
+
+                return RedirectToAction("Index");   
+                
         }
 
 
@@ -75,7 +70,12 @@ namespace BookShopWeb.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(UserRoleVM userRoleVM)
         {
+            bool isUpdated = false;
             ApplicationUser user = await _userManager.FindByIdAsync (userRoleVM.Id);
+
+            if(user.FirstName != userRoleVM.FirstName || user.LastName != userRoleVM.LastName||user.Email != userRoleVM.Email){
+                isUpdated = true;
+            }
             user.FirstName = userRoleVM.FirstName;
             user.LastName = userRoleVM.LastName;
             user.Email = userRoleVM.Email;
@@ -83,12 +83,22 @@ namespace BookShopWeb.Areas.Admin.Controllers
             await _userManager.UpdateAsync(user);
 
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
+            if (userRoles[0]!= userRoleVM.Role)
+            {
+                isUpdated = true;
+            }
             await _userManager.RemoveFromRolesAsync(user, userRoles);
 
             // Assign the new role to the user
             await _userManager.AddToRoleAsync(user, userRoleVM.Role);
 
-
+            if (isUpdated) {
+                TempData["success"] = "User Updated Succesfully";
+            }
+            else
+            {
+                TempData["error"] = "Nothing Changed";
+            }
             return RedirectToAction("Index");
         }
 
