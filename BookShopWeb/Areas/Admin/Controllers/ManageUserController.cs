@@ -51,6 +51,13 @@ namespace BookShopWeb.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
+        public async Task<IActionResult> Edit(string Id)
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(Id);
+            return View(user);
+        }
+
+
     }
 }
