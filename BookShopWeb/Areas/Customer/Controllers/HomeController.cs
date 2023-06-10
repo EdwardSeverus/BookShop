@@ -1,7 +1,11 @@
-﻿using BookShop.DataAccess.Repository.IRepository;
+﻿using BookShop.DataAccess.Repository;
+using BookShop.DataAccess.Repository.IRepository;
 using BookShop.Models;
 using BookShop.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using System.Diagnostics;
 
 namespace BookShopWeb.Areas.Customer.Controllers
@@ -11,11 +15,13 @@ namespace BookShopWeb.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -28,15 +34,34 @@ namespace BookShopWeb.Areas.Customer.Controllers
         //get
         public IActionResult Details(int? id)
         {
+            Product product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id, includeProperties: "Category");
 
             ShoppingCart cartObj = new()
             {
                 Count = 1,
-                Product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id, includeProperties: "Category")
+                Product = product,
+                ProductId = product.Id
+
             };
             return View(cartObj);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Details(ShoppingCart shoppingCart)
+        {
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+
+            ShoppingCart cart = new ShoppingCart();
+            cart.ApplicationUserId = applicationUser.Id;
+            cart.ProductId = shoppingCart.ProductId;
+            cart.Count = shoppingCart.Count;
+            _unitOfWork.ShoppingCart.Add(cart);
+            _unitOfWork.Save();
+            TempData["Success"] = "Added To Cart";
+            return RedirectToAction("Index");
+        }
         public IActionResult Privacy()
         {
             return View();
