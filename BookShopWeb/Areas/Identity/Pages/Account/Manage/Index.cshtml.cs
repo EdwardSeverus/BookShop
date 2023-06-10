@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Hosting;
 
 namespace BookShopWeb.Areas.Identity.Pages.Account.Manage
 {
@@ -17,13 +19,17 @@ namespace BookShopWeb.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IWebHostEnvironment hostEnvironment
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+             _hostEnvironment = hostEnvironment;
         }
 
         /// <summary>
@@ -65,6 +71,13 @@ namespace BookShopWeb.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
+
+            [Display(Name = "Profile Picture")]
+            [ValidateNever]
+            public string ImageUrl { get;set; }
+
+            public IFormFile ImageFile { get; set; }    
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -77,7 +90,9 @@ namespace BookShopWeb.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                FirstName = user.FirstName, LastName = user.LastName
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ImageUrl = user.ImageUrl
             };
         }
 
@@ -110,7 +125,30 @@ namespace BookShopWeb.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             user.FirstName = Input.FirstName;
             user.LastName = Input.LastName;
-            var result = await _userManager.UpdateAsync(user);
+
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            if (Input.ImageFile != null)
+            {
+                string fileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(wwwRootPath, @"images\users");
+                var extension = Path.GetExtension(Input.ImageFile.FileName);
+
+                if (user.ImageUrl != null)
+                {
+                    var oldImagePath = Path.Combine(wwwRootPath, user.ImageUrl.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+                using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                {
+                    Input.ImageFile.CopyTo(fileStreams);
+                }
+                user.ImageUrl = @"\images\users\" + fileName + extension;
+            }
+                var result = await _userManager.UpdateAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);

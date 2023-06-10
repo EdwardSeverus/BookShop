@@ -19,7 +19,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddDefaultTokenPro
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

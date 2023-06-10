@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
+
 namespace BookShopWeb.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
@@ -132,16 +133,44 @@ namespace BookShopWeb.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            Input = new InputModel()
+
+            if (_signInManager.IsSignedIn(User))
             {
-                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                var user = await _userManager.GetUserAsync(User);
+                var role = await _userManager.GetRolesAsync(user);
+                if (role.Contains("Admin"))
                 {
-                    Text = i,
-                    Value = i
-                })
-            };
+                    Input = new InputModel
+                    {
+                        RoleList = _roleManager.Roles
+                        .Select(x => x.Name)
+                        .Select(i => new SelectListItem
+                        {
+                            Text = i,
+                            Value = i
+                        })
+                    };
+                }
+            }
+
+            else
+            {
+                Input = new InputModel
+                {
+                    RoleList = _roleManager.Roles
+                    .Where(x => x.Name != "Admin")
+                    .Select(x => x.Name)
+                    .Select(i => new SelectListItem
+                    {
+                        Text = i,
+                        Value = i
+                    })
+                };
+            }
         }
+
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
