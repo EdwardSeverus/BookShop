@@ -3,10 +3,12 @@ using BookShop.Models.ViewModels;
 using BookShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookShopWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles="Admin")]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
