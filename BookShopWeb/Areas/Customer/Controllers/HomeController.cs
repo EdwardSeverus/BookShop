@@ -51,12 +51,12 @@ namespace BookShopWeb.Areas.Customer.Controllers
         {
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
 
-            shoppingCart.ApplicationUserId = applicationUser.Id;
+            shoppingCart.CustomerId = applicationUser.Id;
 
             ShoppingCart cart = new()
             {
                 ProductId = shoppingCart.ProductId,
-                ApplicationUserId = shoppingCart.ApplicationUserId,
+                CustomerId = shoppingCart.CustomerId,
                 Count = shoppingCart.Count
             };
             _unitOfWork.ShoppingCart.Add(cart);

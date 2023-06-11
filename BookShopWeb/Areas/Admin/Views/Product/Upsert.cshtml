@@ -5,6 +5,7 @@
 
 <form method="post" asp-action="Upsert" enctype="multipart/form-data">
     <input asp-for="Product.Id" hidden />
+    <input asp-for="Product.ApplicationUserId" hidden />
     <input asp-for="Product.ImageUrl" hidden />
     <div class="border p-3 mt-4 row">
         <div class="row pb-2">

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using BookShop.Models.ViewModels;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookShop.Models
 {
@@ -39,5 +41,10 @@ namespace BookShop.Models
         [Required]
         [ValidateNever]
         public Category Category { get; set; }
+        public string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
+
+        [ValidateNever]
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

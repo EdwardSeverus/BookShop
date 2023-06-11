@@ -1,4 +1,8 @@
-﻿@model IEnumerable<Product>
+﻿@using BookShop.Models.ViewModels;
+@model IEnumerable<Product>
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Product";
 }
@@ -26,6 +30,10 @@
                 <th>
                     Category
                 </th>
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Seller</th>
+                }
                 <th>
                     Price
                 </th>
@@ -46,13 +54,27 @@
                     <td>
                         @obj.Category.Name
                     </td>
+                    @{
+                        ApplicationUser applicationUser = UserManager.FindByIdAsync(obj.ApplicationUserId).Result;
+                     }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>@applicationUser.FirstName</td>
+                    }
                     <td>
                         @obj.Price
                     </td>
 
                     <td width="10%">
                         <div class="w-100 btn-group " role="group">
-                            <a asp-area="Admin" asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-outline-primary mx-2"><i class="bi bi-pencil-square"></i></a>
+                            @{
+                                ApplicationUser user = await UserManager.GetUserAsync(User);
+                                if (user.FirstName == applicationUser.FirstName)
+                                {
+                                    <a asp-area="Admin" asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id" class="btn btn-outline-primary mx-2"><i class="bi bi-pencil-square"></i></a>
+                                }
+
+                            }
                             <button type="button" class="btn btn-outline-danger mx-2" data-bs-toggle="modal" data-bs-target="@("#deleteProductModal-" + obj.Id)"><i class="bi bi-trash-fill"></i></button>
                             @await Html.PartialAsync("_deletePartialView",obj)
                         </div>

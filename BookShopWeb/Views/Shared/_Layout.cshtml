@@ -33,14 +33,17 @@
                         </li>
                         <li class="nav-item">
                         </li>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Seller"))
                         {
                             <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Manage</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a></li>
+                                @if (User.IsInRole("Admin")){
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="ManageUSer" asp-action="Index">User</a></li>
+
+                                }
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="ManageUSer" asp-action="Index">User</a></li>
 
                                 <li><a class="dropdown-item" href="#">Action</a></li>
                                 <li><a class="dropdown-item" href="#">Another action</a></li>

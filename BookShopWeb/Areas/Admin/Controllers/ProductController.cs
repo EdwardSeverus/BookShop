@@ -4,25 +4,38 @@ using BookShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace BookShopWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles="Admin,Seller")]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;
-        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment, UserManager<ApplicationUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
-
+            _userManager = userManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
-            return View(objProductList);
+            ApplicationUser user=await _userManager.GetUserAsync(User);
+            if (User.IsInRole("Admin"))
+            {
+                var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
+                return View(objProductList);
+
+            }
+            else
+            {
+                var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").Where(p => p.ApplicationUserId == user.Id);
+                return View(objProductList);
+
+            }
         }
 
         //get
@@ -53,10 +66,11 @@ namespace BookShopWeb.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(ProductVM obj, IFormFile file)
+        public async Task<IActionResult> Upsert(ProductVM obj, IFormFile file)
         {
-            if (ModelState.IsValid)
-            {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            
+
                 string wwwRootPath = _hostEnvironment.WebRootPath;
                 if (file != null)
                 {
@@ -80,9 +94,9 @@ namespace BookShopWeb.Areas.Admin.Controllers
                     obj.Product.ImageUrl = @"\images\products\" + fileName + extension;
 
                 }
-            }
             if (obj.Product.Id != 0)
             {
+                obj.Product.ApplicationUserId = user.Id;
                 _unitOfWork.Product.Update(obj.Product);
                 TempData["success"] = "Product Updated Successfully";
 
@@ -90,7 +104,7 @@ namespace BookShopWeb.Areas.Admin.Controllers
 
             else
             {
-
+                obj.Product.ApplicationUserId = user.Id;
                 _unitOfWork.Product.Add(obj.Product);
                 TempData["success"] = "Product Created Successfully";
 

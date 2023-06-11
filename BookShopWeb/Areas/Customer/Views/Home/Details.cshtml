@@ -1,4 +1,9 @@
 ﻿@model BookShop.Models.ViewModels.ShoppingCart
+
+@using BookShop.Models.ViewModels;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Details";
 }
@@ -20,11 +25,27 @@
 
             </div>
             <p class="desc">@Model.Product.Description</p>
-            <h4>ISBN: @Model.Product.ISBN</h4>
 
-            <h4>Price: @Model.Product.Price$</h4>
+            
+
+            <div class="row">
+                <div class="col-8">
+                    <h4>ISBN: @Model.Product.ISBN</h4>
+
+                    <h4>Price: @Model.Product.Price$</h4>
+                    <input asp-for="Count" />
+                </div>
+                <div class="col-4">
+                @{
+                    ApplicationUser applicationUser = UserManager.FindByIdAsync(@Model.Product.ApplicationUserId).Result;
+
+                <h4>Seller</h4>
+                <img height="70" src="@applicationUser.ImageUrl"/>
+                <span class="fw-bold">@applicationUser.FirstName</span>
+                }
+                </div>
+            </div>
             <input asp-for="@Model.ProductId" hidden />
-            <input asp-for="Count" />
             <div class="row mt-5">
                 <div class="col-6">
                     <button class="btn btn-primary w-100" type="submit">Add to Cart</button>

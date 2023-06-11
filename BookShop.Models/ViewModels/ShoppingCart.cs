@@ -23,10 +23,7 @@ namespace BookShop.Models.ViewModels
 
         public int Count { get; set; }
 
-        public string ApplicationUserId { get; set; }
-        [ForeignKey("ApplicationUserId")]
-
-        [ValidateNever]
-        public ApplicationUser ApplicationUser { get; set; }
+        public string CustomerId { get; set; }
+        
     }
 }
