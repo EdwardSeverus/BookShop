@@ -9,51 +9,62 @@
 }
 
 <form method="post" asp-action="Details">
-    <div class="row container">
-        <div class="col-4 text-end">
-            <img src="@Model.Product.ImageUrl" style="display:block; width:100%" />
+    <input asp-for="@Model.ProductId" hidden />
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@Model.Product.ImageUrl" class="img-fluid" alt="Book Image">
+            </div>
+            <div class="col-md-8">
+                <h2>@Model.Product.Title</h2>
+                <p><strong>Author:</strong> @Model.Product.Author</p>
+                <p><strong>Category:</strong> @Model.Product.Category.Name</p>
+                <p><strong>Price:</strong> @Model.Product.Price</p>
+                <p><strong>ISBN:</strong> @Model.Product.ISBN</p>
+                <p><strong>Seller:</strong></p>
+                <div class="media">
+                    @{
+                        ApplicationUser applicationUser = UserManager.FindByIdAsync(Model.Product.ApplicationUserId).Result;
+                        var userRole = UserManager.GetRolesAsync(applicationUser).Result;
+                        string sellerImageUrl = string.IsNullOrEmpty(applicationUser.ImageUrl) ? "/images/default.png" : applicationUser.ImageUrl;
+                    }
+                    <img src="@sellerImageUrl" class="mr-3 rounded-circle" alt="Seller Photo" style="width: 64px; height: 64px;">
+                    <div class="media-body align-self-center">
+                        <div class="d-flex align-items-center">
+                            <h5 class="mt-0">@applicationUser.FirstName &nbsp;</h5>
+                            @if (userRole[0] == "Admin")
+                            {
+                                <i class="bi bi-check-circle-fill text-primary ml-2"></i>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" class="form-control" asp-for="Count" placeholder="Enter quantity" min="1">
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <button class="btn btn-primary w-100" type="submit">Add to Cart</button>
+                    </div>
+                    <div class="col-6">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-secondary w-100">Go Back</a>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="col-8">
-            <h1>@Model.Product.Title</h1>
-            <div class="row" style="color:#333">
-                <div class="col-4">
-                    <h4><i class="bi bi-person"></i> @Model.Product.Author</h4>
-                </div>
-                <div class="col-4">
-                    <h4><i class="bi bi-tag"></i> @Model.Product.Category.Name</h4>
-                </div>
-
-            </div>
-            <p class="desc">@Model.Product.Description</p>
-
-            
-
-            <div class="row">
-                <div class="col-8">
-                    <h4>ISBN: @Model.Product.ISBN</h4>
-
-                    <h4>Price: @Model.Product.Price$</h4>
-                    <input asp-for="Count" />
-                </div>
-                <div class="col-4">
-                @{
-                    ApplicationUser applicationUser = UserManager.FindByIdAsync(@Model.Product.ApplicationUserId).Result;
-
-                <h4>Seller</h4>
-                <img height="70" src="@applicationUser.ImageUrl"/>
-                <span class="fw-bold">@applicationUser.FirstName</span>
-                }
-                </div>
-            </div>
-            <input asp-for="@Model.ProductId" hidden />
-            <div class="row mt-5">
-                <div class="col-6">
-                    <button class="btn btn-primary w-100" type="submit">Add to Cart</button>
-                </div>
-                <div class="col-6">
-                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-secondary w-100">Go Back</a>
-                </div>
+        <div class="row mt-5">
+            <div class="col">
+                <h3>Product Description</h3>
+                <p>
+                    @Model.Product.Description
+                </p>
             </div>
         </div>
     </div>
+
 </form>
