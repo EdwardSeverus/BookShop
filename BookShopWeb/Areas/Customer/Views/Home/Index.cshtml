@@ -15,6 +15,30 @@
                         <div class="image-container">
                             <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:auto;" alt="Product Image">
 
+                            <div class="card-overlay" >
+                                <div class="card-details" >
+                                    <p><span>Author:</span> @obj.Author</p>
+                                    <p><span>Category:</span> @obj.Category.Name</p>
+                                    <p><span>Price:</span> @(obj.Price) TK</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-title" style="text-align:center;">@obj.Title</p>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        @foreach (var obj in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
+                    <div class=" mb-4" style="text-align:center">
+                        <div class="image-container">
+                            <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:auto;" alt="Product Image">
+
                             <div class="card-overlay">
                                 <div class="card-details">
                                     <p><span>Author:</span> @obj.Author</p>
@@ -24,25 +48,118 @@
                             </div>
                         </div>
                         <p class="card-title" style="text-align:center;">@obj.Title</p>
-
                     </div>
                 </a>
+            </div>
+        }
+    </div>
 
+    <div class="row">
+        @foreach (var obj in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
+                    <div class=" mb-4" style="text-align:center">
+                        <div class="image-container">
+                            <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:auto;" alt="Product Image">
 
+                            <div class="card-overlay">
+                                <div class="card-details">
+                                    <p><span>Author:</span> @obj.Author</p>
+                                    <p><span>Category:</span> @obj.Category.Name</p>
+                                    <p><span>Price:</span> @(obj.Price) TK</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-title" style="text-align:center;">@obj.Title</p>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+        <div class="row">
+        @foreach (var obj in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
+                    <div class=" mb-4" style="text-align:center">
+                        <div class="image-container">
+                            <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:auto;" alt="Product Image">
+
+                            <div class="card-overlay" >
+                                <div class="card-details" >
+                                    <p><span>Author:</span> @obj.Author</p>
+                                    <p><span>Category:</span> @obj.Category.Name</p>
+                                    <p><span>Price:</span> @(obj.Price) TK</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-title" style="text-align:center;">@obj.Title</p>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+        <div class="row">
+        @foreach (var obj in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
+                    <div class=" mb-4" style="text-align:center">
+                        <div class="image-container">
+                            <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:auto;" alt="Product Image">
+
+                            <div class="card-overlay" >
+                                <div class="card-details" >
+                                    <p><span>Author:</span> @obj.Author</p>
+                                    <p><span>Category:</span> @obj.Category.Name</p>
+                                    <p><span>Price:</span> @(obj.Price) TK</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-title" style="text-align:center;">@obj.Title</p>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        @foreach (var obj in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
+                    <div class=" mb-4" style="text-align:center">
+                        <div class="image-container">
+                            <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:auto;" alt="Product Image">
+
+                            <div class="card-overlay">
+                                <div class="card-details">
+                                    <p><span>Author:</span> @obj.Author</p>
+                                    <p><span>Category:</span> @obj.Category.Name</p>
+                                    <p><span>Price:</span> @(obj.Price) TK</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-title" style="text-align:center;">@obj.Title</p>
+                    </div>
+                </a>
             </div>
         }
     </div>
 </div>
 
 <style>
-
-    .card-details{
+    .card-details {
         color: #fff;
         padding-top: 30px;
     }
-    .card-details span{
-        font-weight:bold;
-    }
+
+        .card-details span {
+            font-weight: bold;
+        }
 
     .card-overlay {
         position: absolute;
@@ -79,5 +196,15 @@
         text-align: center;
         color: #fff;
     }
-
 </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.image-container').hover(function () {
+            $(this).find('.card-overlay').stop().animate({ opacity: 1 }, 300);
+        }, function () {
+            $(this).find('.card-overlay').stop().animate({ opacity: 0 }, 300);
+        });
+    });
+</script>
