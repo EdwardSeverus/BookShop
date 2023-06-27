@@ -17,5 +17,10 @@ namespace BookShop.DataAccess.Repository
         {
             _db = db;
         }
+
+        public void Update(ShoppingCart obj)
+        {
+            _db.Update(obj);
+        }
     }
 }

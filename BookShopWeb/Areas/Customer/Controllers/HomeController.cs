@@ -52,14 +52,27 @@ namespace BookShopWeb.Areas.Customer.Controllers
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
 
             shoppingCart.CustomerId = applicationUser.Id;
+            
+            ShoppingCart cartFromDb= _unitOfWork.ShoppingCart.GetFirstOrDefault(u=>u.CustomerId==applicationUser.Id && u.ProductId==shoppingCart.ProductId);
 
-            ShoppingCart cart = new()
+            if(cartFromDb!=null)
             {
-                ProductId = shoppingCart.ProductId,
-                CustomerId = shoppingCart.CustomerId,
-                Count = shoppingCart.Count
-            };
-            _unitOfWork.ShoppingCart.Add(cart);
+                cartFromDb.Count= cartFromDb.Count+shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+
+            }
+            else
+            {
+                ShoppingCart cart = new()
+                {
+                    ProductId = shoppingCart.ProductId,
+                    CustomerId = shoppingCart.CustomerId,
+                    Count = shoppingCart.Count
+                };
+                _unitOfWork.ShoppingCart.Add(cart);
+
+            }
+
             _unitOfWork.Save();
             TempData["Success"] = "Added To Cart";
             return RedirectToAction("Index");
