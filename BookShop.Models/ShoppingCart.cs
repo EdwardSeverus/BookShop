@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookShop.Models.ViewModels
+namespace BookShop.Models
 {
     public class ShoppingCart
     {
@@ -24,6 +24,6 @@ namespace BookShop.Models.ViewModels
         public int Count { get; set; }
 
         public string CustomerId { get; set; }
-        
+
     }
 }

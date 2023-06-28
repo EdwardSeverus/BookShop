@@ -1,7 +1,6 @@
 ﻿using BookShop.DataAccess.Data;
 using BookShop.DataAccess.Repository.IRepository;
 using BookShop.Models;
-using BookShop.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
