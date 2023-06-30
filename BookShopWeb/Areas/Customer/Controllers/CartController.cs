@@ -1,4 +1,5 @@
 ﻿using BookShop.DataAccess.Repository.IRepository;
+using BookShop.Models;
 using BookShop.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,11 +24,12 @@ namespace BookShopWeb.Areas.Customer.Controllers
             ApplicationUser user = await _userManager.GetUserAsync(User);
             ShoppingCartVM = new ShoppingCartVM()
             {
-                ListCart = _unitOfWork.ShoppingCart.GetAll(includeProperties: "Product").Where(u => u.CustomerId == user.Id)
+                ListCart = _unitOfWork.ShoppingCart.GetAll(includeProperties: "Product").Where(u => u.CustomerId == user.Id),
+                OrderHeader = new()
             };
             foreach(var cart in ShoppingCartVM.ListCart)
             {
-                ShoppingCartVM.CartTotal += cart.Product.Price * cart.Count;
+                ShoppingCartVM.OrderHeader.OrderTotal += cart.Product.Price * cart.Count;
             }
             return View(ShoppingCartVM);
         }
@@ -75,9 +77,69 @@ namespace BookShopWeb.Areas.Customer.Controllers
             return RedirectToAction("index");
         }
 
-        public IActionResult Buy()
+        public async Task<IActionResult> Buy()
         {
-            return View();
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            ShoppingCartVM = new ShoppingCartVM()
+            {
+                ListCart = _unitOfWork.ShoppingCart.GetAll(includeProperties: "Product").Where(u => u.CustomerId == user.Id),
+                OrderHeader = new()
+            };
+
+            ShoppingCartVM.OrderHeader.Name = user.FirstName;
+            ShoppingCartVM.OrderHeader.PhoneNumber = user.PhoneNumber;
+            ShoppingCartVM.OrderHeader.StreetAddress = user.Address;
+            
+
+            foreach (var cart in ShoppingCartVM.ListCart)
+            {
+                ShoppingCartVM.OrderHeader.OrderTotal += cart.Product.Price * cart.Count;
+            }
+            return View(ShoppingCartVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Buy(ShoppingCartVM shoppingCartVM)
+        {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            shoppingCartVM.OrderHeader.Name = user.FirstName;
+            shoppingCartVM.OrderHeader.CustomerId = user.Id;
+            shoppingCartVM.OrderHeader.ShippingDate = DateTime.Now.AddDays(7);
+            shoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
+            shoppingCartVM.OrderHeader.OrderStatus = "Processing";
+            shoppingCartVM.OrderHeader.PaymentStatus = "Pending";
+            var myCart = _unitOfWork.ShoppingCart.GetAll(includeProperties: "Product").Where(u => u.CustomerId == user.Id);
+            double TotalPrice = 0;
+            foreach (var cart in myCart)
+            {
+                TotalPrice += cart.Product.Price * cart.Count;
+            }
+            shoppingCartVM.OrderHeader.OrderTotal = TotalPrice;
+
+
+            _unitOfWork.OrderHeader.Add(shoppingCartVM.OrderHeader);
+            _unitOfWork.Save();
+            foreach (var cart in myCart)
+            {
+                OrderDetails orderDetails = new()
+                {
+                    ProductId = cart.ProductId,
+                    OrderId = shoppingCartVM.OrderHeader.Id,
+                    Count = cart.Count,
+                    Price = cart.Product.Price 
+                };
+                _unitOfWork.OrderDetails.Add(orderDetails);
+                _unitOfWork.Save();
+
+                _unitOfWork.ShoppingCart.Remove(cart);
+                _unitOfWork.Save();
+
+            }
+
+
+
+            return RedirectToAction("index");
         }
     }
 }

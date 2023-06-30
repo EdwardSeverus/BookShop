@@ -24,7 +24,8 @@
                 {
                     <img src="@UserManager.GetUserAsync(User).Result.ImageUrl" class="rounded-circle mr-2" alt="User Image" style="width: 32px; height: 32px;">
                 }
-                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserAsync(User).Result.FirstName</a>
+                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserAsync(User).Result.FirstName
+                </a>
             </div>
         </li>
         <li class="nav-item">

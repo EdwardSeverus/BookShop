@@ -1,14 +1,15 @@
-﻿
+﻿@model BookShop.Models.ViewModels.ShoppingCartVM
 
-<form method="post">
+
+<form method="post" asp-action="buy">
     <br />
     <div class="backgroundWhiteBorder">
         <div class="container">
             <div class="card">
                 <div class="card-header  ml-0 ">
                     <div class="row">
-                    <div class="col-6">
-                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        <div class="col-6 text-primary" style="font-size: 20px">
+                        <i class="bi bi-cart-fill"></i> &nbsp;
                         Order Summary
                     </div>
 
@@ -31,15 +32,16 @@
                                         <label>Name</label>
                                     </div>
                                     <div class="col-9">
-                                        <input  type="text" class="form-control" />
+                                        <input type="text" asp-for="OrderHeader.Name" class="form-control" disabled/>
                                     </div>
                                 </div>
+
                                 <div class="row my-1">
                                     <div class="col-3">
                                         <label>Phone</label>
                                     </div>
                                     <div class="col-9">
-                                        <input type="text" class="form-control" />
+                                        <input type="text" asp-for="OrderHeader.PhoneNumber" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -47,8 +49,8 @@
                                         <label>Street Address</label>
                                     </div>
                                     <div class="col-9">
-                                        <input @*asp-for="OrderHeader.StreetAddress"*@ type="text" class="form-control" />
-                                        @*<span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>*@
+                                        <input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -56,8 +58,8 @@
                                         <label>City</label>
                                     </div>
                                     <div class="col-9">
-                                        <input @*asp-for="OrderHeader.City"*@ type="text" class="form-control" />
-                                        @*<span asp-validation-for="OrderHeader.City" class="text-danger"></span>*@
+                                        <input asp-for="OrderHeader.City" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -65,8 +67,8 @@
                                         <label>State</label>
                                     </div>
                                     <div class="col-9">
-                                        <input @*asp-for="OrderHeader.State"*@ type="text" class="form-control" />
-                                        @*<span asp-validation-for="OrderHeader.State" class="text-danger"></span>*@
+                                        <input asp-for="OrderHeader.State" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -74,9 +76,10 @@
                                         <label>Postal Code</label>
                                     </div>
                                     <div class="col-9">
-                                        <input @*asp-for="OrderHeader.PostalCode"*@ type="text" class="form-control" />
-                                        @*<span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>*@
+                                        <input asp-for="OrderHeader.PostalCode" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
                                     </div>
+                                    <input asp-for="ListCart" hidden/>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-5 offset-lg-1">
@@ -84,19 +87,19 @@
                                     <span class="text-info">Order Summary:</span>
                                 </h4>
                                 <ul class="list-group mb-3">
-                                    @*@foreach (var details in Model.ListCart)
-                                    {*@
+                                    @foreach (var details in Model.ListCart)
+                                    {
                                         <li class="list-group-item d-flex justify-content-between">
                                             <div>
-                                                <h6 class="my-0">details.Product.Title</h6>
-                                                <small class="text-muted">Quantity: details.Count</small>
+                                                <h6 class="my-0">@details.Product.Title</h6>
+                                                <small class="text-muted">Quantity: @details.Count</small>
                                             </div>
-                                            <span class="text-muted">$(details.Price * details.Count) </span>
+                                            <span class="text-muted">Tk. @(details.Product.Price * details.Count) </span>
                                         </li>
-                                    @*}*@
+                                    }
                                     <li class="list-group-item d-flex justify-content-between bg-light">
                                         <small class="text-info">Total (BDT)</small>
-                                        <strong class="text-info">$(Model.OrderHeader.OrderTotal)</strong>
+                                        <strong class="text-info">Tk. @(Model.OrderHeader.OrderTotal)</strong>
                                     </li>
                                 </ul>
                             </div>
