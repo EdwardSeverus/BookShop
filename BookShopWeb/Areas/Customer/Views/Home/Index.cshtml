@@ -1,23 +1,66 @@
 ﻿@using BookShop.Models.ViewModels;
-@model IEnumerable<Product>
+@model IndexModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <partial name="_Notification" />
 
-<div class="container " style="width:90%">
+<div class="headerSection">
+
+</div>
+
+<div style="background-color:#f5f5f5;">
+    <div class="container">
+        <div class=" row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">New Arrival</h2>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var obj in Model.NewArrival)
+            {
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
+                        <div class=" mb-4" style="text-align:center">
+                            <div class="image-container">
+                                <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:150px;" alt="Product Image">
+                            </div>
+                            <p>@obj.Title</p>
+                            <p style="margin-top:-20px"><strong>Tk. </strong>@(obj.Price)</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+
+        <div class="text-center">
+            <a class="btn btn-outline-primary mb-4" asp-area="Customer" asp-controller="Home" asp-action="NewArrival">See All</a>
+        </div>
+    </div>
+</div>
+
+<div class="container ">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Best Seller</h2>
+            <hr />
+        </div>
+    </div>
+
     <div class="row">
-        @foreach (var obj in Model)
+        @foreach (var obj in Model.BestSeller)
         {
             <div class="col-6 col-md-4 col-lg-3">
-                <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
+                <a href="@Url.Action("Details", "Home", new { id = obj.ProductId })">
                     <div class=" mb-4" style="text-align:center">
                         <div class="image-container">
-                            <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:150px;" alt="Product Image">
+                            <img src="@obj.Product.ImageUrl" class="card-img-top image" style="height:200px;width:150px;" alt="Product Image">
                         </div>
-                        <p>@obj.Title</p>
-                        <p style="margin-top:-20px"><strong>Tk. </strong>@(obj.Price)</p>
+                        <p>@obj.Product.Title</p>
+                        <p style="margin-top:-20px"><strong>Tk. </strong>@(obj.Product.Price)</p>
                     </div>
                 </a>
             </div>
@@ -25,15 +68,48 @@
     </div>
 
     <div class="text-center">
-        <a class="btn btn-outline-primary" asp-area="Customer" asp-controller="Home" asp-action="AllProduct">All Products</a>
+        <a class="btn btn-outline-primary mb-4" asp-area="Customer" asp-controller="Home" asp-action="BestSeller">See All</a>
     </div>
 </div>
 
+<div style="background-color:#f5f5f5;">
+    <div class="container ">
+        <div class="container row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">Products</h2>
+                <hr />
+            </div>
+        </div>
 
+        <div class="row">
+            @foreach (var obj in Model.ProductList)
+            {
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
+                        <div class=" mb-4" style="text-align:center">
+                            <div class="image-container">
+                                <img src="@obj.ImageUrl" class="card-img-top image" style="height:200px;width:150px;" alt="Product Image">
+                            </div>
+                            <p>@obj.Title</p>
+                            <p style="margin-top:-20px"><strong>Tk. </strong>@(obj.Price)</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
 
-
+        <div class="text-center">
+            <a class="btn btn-outline-primary mb-4" asp-area="Customer" asp-controller="Home" asp-action="AllProduct">All Products</a>
+        </div>
+    </div>
+</div>
 
 <style>
+    .headerSection{
+        background-color:green;
+        height:92vh;
+    }
+
     .image-container {
         position: relative;
         overflow: hidden;
@@ -51,6 +127,7 @@
         height: 200px;
         width: 150px;
     }
+
 </style>
 
 

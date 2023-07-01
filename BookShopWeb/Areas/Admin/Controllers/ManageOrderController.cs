@@ -19,7 +19,7 @@ namespace BookShopWeb.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             IEnumerable<OrderHeader> orderHeader = _unitOfWork.OrderHeaders.GetAll().OrderByDescending(u => u.OrderDate);
             return View(orderHeader);

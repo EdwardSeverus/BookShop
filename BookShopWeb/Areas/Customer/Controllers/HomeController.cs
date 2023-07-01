@@ -24,9 +24,36 @@ namespace BookShopWeb.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> objProductList;
-            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").OrderByDescending(p => p.Id).Take(8);
-            return View(objProductList);
+            IEnumerable<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category")
+    .OrderBy(x => Guid.NewGuid())
+    .Take(8);
+
+
+            IEnumerable<Product> newArrival = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                .OrderByDescending(p => p.Id)
+                .Take(4);
+
+            IEnumerable<OrderDetails> orderDetails = _unitOfWork.OrderDetails.GetAll(includeProperties: "Product");
+
+            var productCounts = orderDetails
+                .GroupBy(d => d.ProductId)
+                .Select(g => new ProductCountViewModel
+                {
+                    ProductId = g.Key,
+                    Product = g.First().Product,
+                    TotalCount = g.Sum(d => d.Count)
+                })
+                .OrderByDescending(p => p.TotalCount)
+                .Take(4);
+
+            var indexModel = new IndexModel
+            {
+                ProductList = objProductList,
+                BestSeller = productCounts,
+                NewArrival = newArrival,
+            };
+
+            return View(indexModel);
         }
 
         //get
@@ -81,8 +108,16 @@ namespace BookShopWeb.Areas.Customer.Controllers
         public IActionResult AllProduct()
         {
             IEnumerable<Product> objProductList;
-            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").OrderByDescending(p => p.Id);
+            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").OrderBy(x => Guid.NewGuid());
             return View(objProductList);
+        }
+
+        public IActionResult NewArrival()
+        {
+            IEnumerable<Product> newArrival = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                .OrderByDescending(p => p.Id)
+                .Take(12);
+            return View(newArrival);
         }
 
 
