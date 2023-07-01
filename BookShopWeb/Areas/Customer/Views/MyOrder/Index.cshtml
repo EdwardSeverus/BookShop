@@ -1,0 +1,69 @@
+﻿@model IEnumerable<OrderHeader>
+
+@{
+    ViewData["Title"] = "My Order";
+}
+
+<partial name="_Notification" />
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Order List</h2>
+        </div>
+    </div>
+    <br />
+
+    <table class="table table-bordered table-striped text-center" style="margin:auto">
+        <thead>
+            <tr>
+                <th>
+                    Order ID
+                </th>
+                <th>
+                    Order Date
+                </th>
+                
+                <th>Total Price</th>
+                <th>
+                    Payment Status
+                </th>
+
+                <th>
+                    Order Status
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>
+                        @obj.Id
+                    </td>
+                    <td>
+                        @obj.OrderDate.ToString("dd MMM yyyy")
+                    </td>
+                    <td>
+                        @obj.OrderTotal
+                    </td>
+
+                    <td>
+                        @obj.PaymentStatus
+                    </td>
+
+                    <td>
+                        @obj.OrderStatus
+                    </td>
+
+                    <td class="text-center">
+
+                        <a asp-action="details" asp-route-id="@obj.Id" asp-area="Customer" asp-asp-controller="MyOrder" class="text-primary">See More...</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

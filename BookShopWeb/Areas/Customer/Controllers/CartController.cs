@@ -118,7 +118,7 @@ namespace BookShopWeb.Areas.Customer.Controllers
             shoppingCartVM.OrderHeader.OrderTotal = TotalPrice;
 
 
-            _unitOfWork.OrderHeader.Add(shoppingCartVM.OrderHeader);
+            _unitOfWork.OrderHeaders.Add(shoppingCartVM.OrderHeader);
             _unitOfWork.Save();
             foreach (var cart in myCart)
             {
@@ -138,8 +138,8 @@ namespace BookShopWeb.Areas.Customer.Controllers
             }
 
 
-
-            return RedirectToAction("index");
+            TempData["Success"] = "Order Placed Successfully";
+            return RedirectToAction("Index", "MyOrder", new { area = "Customer" });
         }
     }
 }
