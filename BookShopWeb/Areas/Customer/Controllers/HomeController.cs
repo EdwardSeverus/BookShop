@@ -25,7 +25,7 @@ namespace BookShopWeb.Areas.Customer.Controllers
         public IActionResult Index()
         {
             IEnumerable<Product> objProductList;
-            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
+            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").OrderByDescending(p => p.Id).Take(8);
             return View(objProductList);
         }
 
@@ -77,6 +77,36 @@ namespace BookShopWeb.Areas.Customer.Controllers
             TempData["Success"] = "Added To Cart";
             return RedirectToAction("Index");
         }
+
+        public IActionResult AllProduct()
+        {
+            IEnumerable<Product> objProductList;
+            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").OrderByDescending(p => p.Id);
+            return View(objProductList);
+        }
+
+
+        public async Task<IActionResult> BestSeller()
+        {
+
+            IEnumerable<OrderDetails> orderDetails = _unitOfWork.OrderDetails.GetAll(includeProperties: "Product");
+
+
+            var productCounts = orderDetails
+                .GroupBy(d => d.ProductId)
+                .Select(g => new ProductCountViewModel
+                {
+                    ProductId = g.Key,
+                    Product = g.First().Product,
+                    TotalCount = g.Sum(d => d.Count)
+                })
+                .OrderByDescending(p => p.TotalCount).Take(12);
+
+
+            return View(productCounts);
+        }
+
+
         public IActionResult Privacy()
         {
             return View();

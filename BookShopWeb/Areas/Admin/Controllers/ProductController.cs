@@ -26,13 +26,13 @@ namespace BookShopWeb.Areas.Admin.Controllers
             ApplicationUser user=await _userManager.GetUserAsync(User);
             if (User.IsInRole("Admin"))
             {
-                var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
+                var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").OrderByDescending(p => p.Id);
                 return View(objProductList);
 
             }
             else
             {
-                var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").Where(p => p.ApplicationUserId == user.Id);
+                var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").Where(p => p.ApplicationUserId == user.Id).OrderByDescending(p => p.Id);
                 return View(objProductList);
 
             }
@@ -116,7 +116,6 @@ namespace BookShopWeb.Areas.Admin.Controllers
         }
 
 
-
         //post
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -135,6 +134,29 @@ namespace BookShopWeb.Areas.Admin.Controllers
             TempData["success"] = "Product Deleted Successfully";
             return RedirectToAction("Index");
         }
+
+        public async Task <IActionResult> Sale()
+        {
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+
+            IEnumerable<OrderDetails> orderDetails = _unitOfWork.OrderDetails.GetAll(includeProperties: "Product");
+
+            
+            var productCounts = orderDetails
+                .Where(d => d.Product.ApplicationUserId == applicationUser.Id) // Filter by matching userId
+                .GroupBy(d => d.ProductId)
+                .Select(g => new ProductCountViewModel
+                {
+                    ProductId = g.Key,
+                    Product = g.First().Product,
+                    TotalCount = g.Sum(d => d.Count)
+                })
+                .OrderByDescending(p => p.TotalCount);
+
+            
+            return View(productCounts);
+        }
+
 
     }
 }

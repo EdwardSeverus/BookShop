@@ -74,11 +74,15 @@
             </ul>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 text-end mt-2 ">
-            <a asp-action="buy" class="btn btn-primary" style="padding-left:70px;padding-right:70px">
-                BUY NOW
-            </a>
+    @if (Model.OrderHeader.OrderTotal > 0)
+    {
+        <div class="row">
+            <div class="col-12 text-end mt-2 ">
+                <a asp-action="buy" class="btn btn-primary" style="padding-left:70px;padding-right:70px">
+                    BUY NOW
+                </a>
+            </div>
         </div>
-    </div>
+
+    }
 </form>

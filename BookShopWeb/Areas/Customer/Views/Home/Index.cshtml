@@ -1,15 +1,16 @@
-﻿@model IEnumerable<Product>
+﻿@using BookShop.Models.ViewModels;
+@model IEnumerable<Product>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <partial name="_Notification" />
 
-<div class="container">
+<div class="container " style="width:90%">
     <div class="row">
         @foreach (var obj in Model)
         {
-            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="col-6 col-md-4 col-lg-3">
                 <a href="@Url.Action("Details", "Home", new { id = obj.Id })">
                     <div class=" mb-4" style="text-align:center">
                         <div class="image-container">
@@ -22,7 +23,15 @@
             </div>
         }
     </div>
+
+    <div class="text-center">
+        <a class="btn btn-outline-primary" asp-area="Customer" asp-controller="Home" asp-action="AllProduct">All Products</a>
+    </div>
 </div>
+
+
+
+
 
 <style>
     .image-container {

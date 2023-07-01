@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BookShop.Models.ViewModels.ProductCountViewModel>
+@using BookShop.Models.ViewModels;
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">My Sell</h2>
+        </div>
+    </div>
+    <br />
+
+    <table class="table table-bordered table-striped text-center" style="margin:auto">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Title</th>
+                <th>Sale Count</th>
+                <th>Unit Price</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var productCount in Model)
+            {
+                <tr>
+                    <td>@productCount.ProductId</td>
+                    <td>@productCount.Product.Title</td>
+                    <td>@productCount.TotalCount</td>
+                    <td>@productCount.Product.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

@@ -47,6 +47,7 @@
 
                                     }
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="sale">Sales</a></li>
 
                                     @if (User.IsInRole("Admin"))
                                     {
@@ -54,15 +55,19 @@
 
                                     }
 
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                                    
                                 </ul>
 
                             </li>
                         }
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="AllProduct">All Products</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="BestSeller">Best Seller</a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="MyOrder" asp-action="Index">My Order</a>
