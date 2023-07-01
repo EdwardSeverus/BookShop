@@ -51,19 +51,21 @@
                                                     <td>@Model.PaymentStatus</td>
                                                 </tr>
 
-                                                @{
-                                                    if(Model.OrderStatus=="Shipped" || Model.OrderStatus == "Delivered"){
-                                                    <tr>
-                                                        <th>Carrier</th>
-                                                        <td>@Model.Carrier</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Tracking Id</th>
-                                                        <td>@Model.TrackingNumber
-                                                        </td>
-                                                    </tr>
-                                                    }
-                                                }
+                                                        @{
+                                                            if (Model.OrderStatus == "Shipped" || Model.OrderStatus == "Delivered")
+                                                            {
+                                                        <tr>
+                                                            <th>Carrier</th>
+                                                            <td>@Model.Carrier</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Tracking Id</th>
+                                                            <td>
+                                                                        @Model.TrackingNumber
+                                                            </td>
+                                                        </tr>
+                                                            }
+                                                        }
 
                                             </tbody>
                                         </table>
@@ -94,11 +96,11 @@
                                                     </div>
                                                 }
 
-                                                
+
                                             }
                                         }
 
-                                        <br/>
+                                        <br />
                                         <strong>Shipping Address: </strong> @Model.Address
 
                                     </div>
@@ -135,17 +137,34 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-12 col-md-8 pt-2">
-                            <p style="color:maroon; font-size:14px;">Estimate Arrival Date: @Model.ShippingDate.ToString("dd MMM yyyy")</p>
+                            @{
+
+                                if (Model.OrderStatus == "Delivered")
+                                {
+                                    <p style="color:maroon; font-size:14px;">Delivery Date: @Model.ShippingDate.ToString("dd MMM yyyy")</p>
+
+                                }
+                                else
+                                {
+                                    <p style="color:maroon; font-size:14px;">Estimated Delivery Date: @Model.ShippingDate.ToString("dd MMM yyyy")</p>
+
+                                }
+                            }
+
+
+
                         </div>
                         <div class="col-12 col-md-4">
 
                             @if (Model.PaymentStatus == "Paid")
                             {
-                                @if(Model.OrderStatus=="Shipped"){
+                                @if (Model.OrderStatus == "Shipped")
+                                {
                                     <button type="submit" class="btn btn-primary form-control">Mark as Delivered</button>
 
                                 }
-                                else if(Model.OrderStatus=="Delivered"){
+                                else if (Model.OrderStatus == "Delivered")
+                                {
                                     <p class="text-end" style="padding-top:9px">Product is already delivered</p>
 
                                 }

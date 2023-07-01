@@ -15,9 +15,7 @@
                             Order Details
                         </div>
 
-                        <div class="col-6 text-end">
-                            <a asp-area="Customer" asp-controller="MyOrder" asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
-                        </div>
+
                     </div>
                 </div>
                 <div class="card-body">
@@ -105,8 +103,24 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-12 col-md-8 pt-2">
-                            <p style="color:maroon; font-size:14px;">Estimate Arrival Date: @Model.ShippingDate.ToString("dd MMM yyyy")</p>
+                            @{
+
+                                if (Model.OrderStatus == "Delivered")
+                                {
+                                    <p style="color:maroon; font-size:14px;">Delivery Date: @Model.ShippingDate.ToString("dd MMM yyyy")</p>
+
+                                }
+                                else
+                                {
+                                    <p style="color:maroon; font-size:14px;">Estimated Delivery Date: @Model.ShippingDate.ToString("dd MMM yyyy")</p>
+
+                                }
+                            }
+
+
+
                         </div>
+
                         <div class="col-12 col-md-4">
 
                             @if (Model.PaymentStatus == "Pending")
