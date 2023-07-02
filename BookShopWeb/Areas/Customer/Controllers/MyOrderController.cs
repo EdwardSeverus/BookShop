@@ -23,6 +23,8 @@ namespace BookShopWeb.Areas.Customer.Controllers
         public async Task<IActionResult> Index()
         {
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+
+
             IEnumerable<OrderHeader> orderHeader = _unitOfWork.OrderHeaders.GetAll().Where(u=>u.CustomerId==applicationUser.Id).OrderByDescending(u => u.OrderDate);
             return View(orderHeader);
         }

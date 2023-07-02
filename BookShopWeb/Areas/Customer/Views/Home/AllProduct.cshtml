@@ -27,15 +27,15 @@
 
                 <div class="row">
 
-                    <div class="col-4">
+                    <div class="col-4 mt-2">
                         <h2 class="text-primary">Product</h2>
 
                     </div>
 
                     <div class="col-8">
-                        <form asp-action="Search" method="post" class="row">
+                        <form asp-action="AllProduct" method="post" class="row">
                             <div class="form-group col-10">
-                                <input type="text" class="form-control" name="searchQuery" placeholder="Search by Product Name or Author" required/>
+                                <input type="text" class="form-control" name="searchQuery" asp-for="searchQuery" placeholder="Search by Product Name or Author" required/>
                             </div>
                             <div class="text-left col-2">
                                 <button type="submit" class="btn btn-primary">Search</button>
@@ -47,6 +47,9 @@
                 </div>
                 
             </div>
+
+
+
             <div class="row" id="product-container">
                 @foreach (var obj in Model.Products)
                 {
@@ -61,6 +64,21 @@
                             </div>
                         </a>
                     </div>
+                }
+            </div>
+
+            <div class="text-center " style="margin-bottom:40px">
+                @{
+                    int i = 0;
+                }
+                @for (i= 1; i <= Model.totalProductCount*1.0/8; i++)
+                {
+                    <a class="btn btn-outline-primary" asp-action="AllProduct" asp-area="Customer" asp-controller="Home" asp-route-pagenumber ="@i">@i</a>
+                }
+
+                @if (Model.totalProductCount % 8 != 0)
+                {
+                    <a class="btn btn-outline-primary" asp-action="AllProduct" asp-area="Customer" asp-controller="Home" asp-route-pagenumber="@i">@i</a>
                 }
             </div>
         </div>

@@ -12,5 +12,9 @@ namespace BookShop.Models.ViewModels
         public IEnumerable<Category> Categories { get; set; }
 
         public List<int> SelectedCategories;
+
+        public int totalProductCount;
+
+        public string searchQuery;
     }
 }

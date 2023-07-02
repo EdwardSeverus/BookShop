@@ -111,18 +111,25 @@ namespace BookShopWeb.Areas.Customer.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult AllProduct()
+        public IActionResult AllProduct(int pageNumber=1, int pageSize=8)
         {
-            IEnumerable<Product> objProductList;
-            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
 
+            int ExcludeRecords = (pageNumber * pageSize) - pageSize;
+
+            IEnumerable<Product> objProductList;
+            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                .Skip(ExcludeRecords)
+                .Take(pageSize);
+
+            int totalCount = _unitOfWork.Product.GetAll(includeProperties: "Category").Count();
             var categories = _unitOfWork.Category.GetAll(); // Retrieve all categories
 
             var viewModel = new ProductCategoryViewModel
             {
                 Products = objProductList,
                 Categories = categories,
-                SelectedCategories = new List<int>()
+                SelectedCategories = new List<int>(),
+                totalProductCount = totalCount
             };
 
          
@@ -131,21 +138,40 @@ namespace BookShopWeb.Areas.Customer.Controllers
 
 
         [HttpPost]
-        public IActionResult AllProduct(List<int> selectedCategories)
+        public IActionResult AllProduct(List<int> selectedCategories, string searchQuery, int pageNumber = 1, int pageSize = 8)
         {
+
+            int ExcludeRecords = (pageNumber * pageSize) - pageSize;
+            int totalCount = 0;
+
             IEnumerable<Product> objProductList;
 
             if (selectedCategories.Count > 0)
             {
                 objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category")
-                    .Where(p => selectedCategories.Contains(p.CategoryId));
-                    
+                    .Where(p => selectedCategories.Contains(p.CategoryId)).Skip(ExcludeRecords)
+                .Take(pageSize);
+
+                totalCount = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                    .Where(p => selectedCategories.Contains(p.CategoryId)).Count();
+
             }
             else
             {
-                objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
-                    
+                objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").Skip(ExcludeRecords)
+                .Take(pageSize);
+
+                totalCount = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                    .Count();
+
             }
+            if (searchQuery != null)
+            {
+                objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                .Where(p => p.Title.ToLower().Contains(searchQuery.ToLower())
+                    || p.Author.ToLower().Contains(searchQuery.ToLower()));
+            }
+            
 
             var categories = _unitOfWork.Category.GetAll();
 
@@ -153,41 +179,14 @@ namespace BookShopWeb.Areas.Customer.Controllers
             {
                 Products = objProductList,
                 Categories = categories,
-                SelectedCategories = selectedCategories
+                SelectedCategories = selectedCategories,
+                totalProductCount = totalCount,
+                searchQuery = searchQuery
             };
 
             return View(viewModel);
         }
 
-
-        public IActionResult Search()
-        {
-            return RedirectToAction("AllProduct");
-        }
-
-
-        [HttpPost]
-        public IActionResult Search(string searchQuery)
-        {
-            // Perform search logic based on the search query
-            IEnumerable<Product> searchResults = _unitOfWork.Product.GetAll(includeProperties: "Category")
-                .Where(p => p.Title.ToLower().Contains(searchQuery.ToLower())
-                    || p.Author.ToLower().Contains(searchQuery.ToLower()));
-
-
-
-
-            var categories = _unitOfWork.Category.GetAll();
-
-            var viewModel = new ProductCategoryViewModel
-            {
-                Products = searchResults,
-                Categories = categories,
-                SelectedCategories = new List<int>()
-            };
-
-            return View("AllProduct", viewModel);
-        }
 
 
 
