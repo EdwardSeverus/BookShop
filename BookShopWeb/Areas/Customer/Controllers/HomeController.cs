@@ -220,11 +220,6 @@ namespace BookShopWeb.Areas.Customer.Controllers
         }
 
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult AboutUs()
         {
             return View();

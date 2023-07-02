@@ -10,6 +10,10 @@
 @{
     ViewData["Title"] = "Register";
 }
+
+<div style="margin-top:50px">
+</div>
+
 <div class="border p-3 mt-4" style="margin:auto;width:80%">
 <h2 style="color:blue;">Create Account</h2>
 <hr />
@@ -63,8 +67,8 @@
                 </select>
             </div>
             <div class="row">
-                <div class="col-6">
-                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                <div class="col-12 text-center">
+                        <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-primary">Register</button>
                         
                 </div>
                 @if (User.IsInRole("Admin"))
@@ -78,6 +82,9 @@
     </div>
 
 </div>
+</div>
+
+<div style="margin-bottom:120px">
 </div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
