@@ -11,7 +11,7 @@
                     @foreach (var category in Model.Categories)
                     {
                         <label class="list-group-item">
-                            <input type="checkbox" name="selectedCategories" value="@category.Id" />
+                            <input type="checkbox" name="selectedCategories" value="@category.Id" @(Model.SelectedCategories.Contains(category.Id) ? "checked" : "") />
                             @category.Name
                         </label>
                     }
@@ -23,8 +23,30 @@
         </div>
 
         <div class="col-10">
-            <h2 class="text-primary">Products</h2>
-            <hr />
+            <div class="col-12 mb-4">
+
+                <div class="row">
+
+                    <div class="col-4">
+                        <h2 class="text-primary">Product</h2>
+
+                    </div>
+
+                    <div class="col-8">
+                        <form asp-action="Search" method="post" class="row">
+                            <div class="form-group col-10">
+                                <input type="text" class="form-control" name="searchQuery" placeholder="Search by Product Name or Author" required/>
+                            </div>
+                            <div class="text-left col-2">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <hr />
+                </div>
+                
+            </div>
             <div class="row" id="product-container">
                 @foreach (var obj in Model.Products)
                 {
@@ -45,5 +67,3 @@
     </div>
 </div>
 
-@section scripts {
-}

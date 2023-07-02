@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace BookShopWeb.Areas.Customer.Controllers
@@ -120,9 +121,11 @@ namespace BookShopWeb.Areas.Customer.Controllers
             var viewModel = new ProductCategoryViewModel
             {
                 Products = objProductList,
-                Categories = categories
+                Categories = categories,
+                SelectedCategories = new List<int>()
             };
 
+         
             return View(viewModel);
         }
 
@@ -149,10 +152,41 @@ namespace BookShopWeb.Areas.Customer.Controllers
             var viewModel = new ProductCategoryViewModel
             {
                 Products = objProductList,
-                Categories = categories
+                Categories = categories,
+                SelectedCategories = selectedCategories
             };
 
             return View(viewModel);
+        }
+
+
+        public IActionResult Search()
+        {
+            return RedirectToAction("AllProduct");
+        }
+
+
+        [HttpPost]
+        public IActionResult Search(string searchQuery)
+        {
+            // Perform search logic based on the search query
+            IEnumerable<Product> searchResults = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                .Where(p => p.Title.ToLower().Contains(searchQuery.ToLower())
+                    || p.Author.ToLower().Contains(searchQuery.ToLower()));
+
+
+
+
+            var categories = _unitOfWork.Category.GetAll();
+
+            var viewModel = new ProductCategoryViewModel
+            {
+                Products = searchResults,
+                Categories = categories,
+                SelectedCategories = new List<int>()
+            };
+
+            return View("AllProduct", viewModel);
         }
 
 
