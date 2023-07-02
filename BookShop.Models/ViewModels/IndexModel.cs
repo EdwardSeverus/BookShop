@@ -10,6 +10,7 @@ namespace BookShop.Models.ViewModels
     {
         public IEnumerable<Product> ProductList { get; set; }
         public IEnumerable<ProductCountViewModel> BestSeller {  get; set; }
+        public IEnumerable<Product> Featured { get; set; }
 
         public IEnumerable<Product> NewArrival { get; set; }
 

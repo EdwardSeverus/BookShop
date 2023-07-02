@@ -8,13 +8,51 @@
 
 <div class="headerSection">
 
+    <div class="row">
+        <div class="col-6">
+            <div style="font-size:45px;width:60%;margin:auto;margin-top:10vh;" class="text-primary">Biggest Book Store in Bangladesh</div>
+            <div  style="font-size:25px;width:60%;margin:auto;" class="text-muted mt-2">Most updated book store in BD. Buy your favourite books at reasonable price.</div>
+
+            <div class="text-center mt-3">
+                <a asp-area="Customer" asp-controller="Home" asp-action="Allproduct" class="btn btn-primary" style="margin-right:1%">Shop Now</a>  
+                <a asp-area="Customer" asp-controller="Home" asp-action="AboutUs" class="btn btn-outline-primary">About Us</a>
+            </div>
+            <div style="width:60%;margin:auto;margin-top:8vh;font-size:20px">
+                <p><i class="bi bi-people-fill"></i>&nbsp; 20000+ Daily User</p>
+                <p><i class="bi bi-gear-fill"></i>&nbsp; 24/7 Services</p>
+                <p><i class="bi bi-book-fill"></i>&nbsp; More than 2 Lakh Books</p>
+            </div>
+
+        </div>
+
+        <div class="col-6">
+            <div class="row" style="margin-top:15vh;">
+                <div class="col-12 text-center">
+                    <h4 class="text-primary">Featured Product</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 text-center">
+                    @foreach(var obj in Model.Featured)
+                    {
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-id="@obj.Id">
+                            <img src="@obj.ImageUrl" style="height:300px;" />
+
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <div style="background-color:#f5f5f5;">
     <div class="container">
         <div class=" row pt-4">
-            <div class="col-6">
-                <h2 class="text-primary">New Arrival</h2>
+            <div class="col-12 text-center">
+                <h3 class="text-primary">New Arrival</h3>
                 <hr />
             </div>
         </div>
@@ -44,8 +82,8 @@
 
 <div class="container ">
     <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">Best Seller</h2>
+        <div class="col-12 text-center">
+            <h3 class="text-primary">Best Seller</h3>
             <hr />
         </div>
     </div>
@@ -75,8 +113,8 @@
 <div style="background-color:#f5f5f5;">
     <div class="container ">
         <div class="container row pt-4">
-            <div class="col-6">
-                <h2 class="text-primary">Products</h2>
+            <div class="col-12 text-center">
+                <h3 class="text-primary">Products</h3>
                 <hr />
             </div>
         </div>
@@ -106,7 +144,6 @@
 
 <style>
     .headerSection{
-        background-color:green;
         height:92vh;
     }
 
@@ -128,16 +165,24 @@
         width: 150px;
     }
 
+    
 </style>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.image-container').hover(function () {
-            $(this).find('.card-overlay').stop().animate({ opacity: 1 }, 300);
-        }, function () {
-            $(this).find('.card-overlay').stop().animate({ opacity: 0 }, 300);
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.bxslider').bxSlider({
+                auto: true,
+                mode: 'fade',
+                speed: 1000, // Adjust the transition speed
+                pause: 5000, // Adjust the pause between slides
+                controls: false, // Set to true if you want to display prev/next controls
+                pager: true // Set to true if you want to display pager
+            });
         });
-    });
-</script>
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+
+
+

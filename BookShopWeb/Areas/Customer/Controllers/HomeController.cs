@@ -25,8 +25,12 @@ namespace BookShopWeb.Areas.Customer.Controllers
         public IActionResult Index()
         {
             IEnumerable<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category")
-    .OrderBy(x => Guid.NewGuid())
-    .Take(8);
+                .OrderBy(x => Guid.NewGuid())
+                .Take(8);
+
+            IEnumerable<Product> featured = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                .OrderBy(x => Guid.NewGuid())
+                .Take(3);
 
 
             IEnumerable<Product> newArrival = _unitOfWork.Product.GetAll(includeProperties: "Category")
@@ -51,6 +55,7 @@ namespace BookShopWeb.Areas.Customer.Controllers
                 ProductList = objProductList,
                 BestSeller = productCounts,
                 NewArrival = newArrival,
+                Featured = featured
             };
 
             return View(indexModel);
@@ -79,12 +84,12 @@ namespace BookShopWeb.Areas.Customer.Controllers
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
 
             shoppingCart.CustomerId = applicationUser.Id;
-            
-            ShoppingCart cartFromDb= _unitOfWork.ShoppingCart.GetFirstOrDefault(u=>u.CustomerId==applicationUser.Id && u.ProductId==shoppingCart.ProductId);
 
-            if(cartFromDb!=null)
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.CustomerId == applicationUser.Id && u.ProductId == shoppingCart.ProductId);
+
+            if (cartFromDb != null)
             {
-                cartFromDb.Count= cartFromDb.Count+shoppingCart.Count;
+                cartFromDb.Count = cartFromDb.Count + shoppingCart.Count;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
 
             }
@@ -108,9 +113,49 @@ namespace BookShopWeb.Areas.Customer.Controllers
         public IActionResult AllProduct()
         {
             IEnumerable<Product> objProductList;
-            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").OrderBy(x => Guid.NewGuid());
-            return View(objProductList);
+            objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
+
+            var categories = _unitOfWork.Category.GetAll(); // Retrieve all categories
+
+            var viewModel = new ProductCategoryViewModel
+            {
+                Products = objProductList,
+                Categories = categories
+            };
+
+            return View(viewModel);
         }
+
+
+        [HttpPost]
+        public IActionResult AllProduct(List<int> selectedCategories)
+        {
+            IEnumerable<Product> objProductList;
+
+            if (selectedCategories.Count > 0)
+            {
+                objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category")
+                    .Where(p => selectedCategories.Contains(p.CategoryId));
+                    
+            }
+            else
+            {
+                objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
+                    
+            }
+
+            var categories = _unitOfWork.Category.GetAll();
+
+            var viewModel = new ProductCategoryViewModel
+            {
+                Products = objProductList,
+                Categories = categories
+            };
+
+            return View(viewModel);
+        }
+
+
 
         public IActionResult NewArrival()
         {
@@ -143,6 +188,11 @@ namespace BookShopWeb.Areas.Customer.Controllers
 
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult AboutUs()
         {
             return View();
         }
