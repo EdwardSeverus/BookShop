@@ -84,15 +84,72 @@
     </header>
 
     <div>
-        <main role="main" style="margin-bottom:-20px;margin-top:-20px">
+        <main role="main" style="margin-top:-20px;margin-bottom:160px;">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - BookShop - <a asp-area="Customer" asp-controller="Home" asp-action="AboutUs">About Us</a>
+            <div class="row">
+                <div class="col-4 ">
+                    <a asp-action="Index" asp-area="Customer" asp-controller="Home">
+                        <h4 class="text-primary mt-2"><span class="text-primary">book</span><span style="color:red;">Shop</span></h4>
+                    </a>
+                    <div  class="row" style="margin-top:-25px;margin-left:1px;">
+
+                            <div class="col-1">
+                                <a href="https://www.facebook.com/">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                            </div>
+                            <div class="col-1">
+                                <a href="https://www.twitter.com/">
+                                    <i class="bi bi-twitter"></i>
+                                </a>
+                            </div>
+                            <div class="col-1">
+                                <a href="https://www.instagram.com/">
+                                    <i class="bi bi-instagram"></i>
+                                </a>
+                            </div>                      
+
+                    </div>
+                </div>
+                 <div class="col-4 text-center">
+                    <h5 class="mt-2">Contact Us</h5>
+
+                    <address style="margin-top:-25px;">623 Harrison St., 2nd Floor, San Francisco, CA 94107</address>
+                    <div style="margin-top:-50px;">
+                        Phone: +8801813830083
+                    </div>
+                    <div style="margin-top:-40px; margin-bottom:-20px">
+                        Email: hello@bookshop.com
+
+                    </div>
+
+                   
+                </div>
+                <div class="col-4 text-end">
+
+                    <h5 class="mt-2" style="margin-bottom:-20px">Useful Links</h5>
+
+                    <div>
+                        <a class="text-primary" asp-area="Customer" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                    </div>
+
+                    <div style="margin-top:-40px">
+                        <a href="https://www.tracking.sundarbancourierltd.com/">Track Your Order</a>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+        <div class="text-center">
+            &copy; 2023 - All Rights Reserved
+        </div>
+        
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
