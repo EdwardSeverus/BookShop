@@ -3,7 +3,9 @@
     ViewData["Title"] = "Upsert";
 }
 
-<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+<br/>
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data" class="container">
     <input asp-for="Product.Id" hidden />
     <input asp-for="Product.ApplicationUserId" hidden />
     <input asp-for="Product.ImageUrl" hidden />
@@ -98,6 +100,10 @@
 
     </div>
 </form>
+
+<div style="height:80px">
+
+</div>
 
 @section Scripts{
     @{
