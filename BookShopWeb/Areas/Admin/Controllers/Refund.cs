@@ -52,7 +52,9 @@ namespace BookShopWeb.Areas.Admin.Controllers
         {
             OrderHeader orderHeader = _unitOfWork.OrderHeaders.GetFirstOrDefault(u=>u.Id == orderVM.ID);
             orderHeader.OrderStatus = "Refunded";
-            
+
+            TempData["success"] = " Refunded";
+
             _unitOfWork.OrderHeaders.Update(orderHeader);
             _unitOfWork.Save();
             return RedirectToAction("Index");

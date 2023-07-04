@@ -120,8 +120,12 @@ namespace BookShopWeb.Areas.Customer.Controllers
             OrderHeader orderHeader= _unitOfWork.OrderHeaders.GetFirstOrDefault(u=>u.Id == id);
             orderHeader.OrderStatus = "Cancelled";
             orderHeader.IsCancelled = "1";
+
             _unitOfWork.OrderHeaders.Update(orderHeader) ;
             _unitOfWork.Save();
+
+            TempData["success"] = " Order Cancelled";
+
             return RedirectToAction("Index");
 
         }

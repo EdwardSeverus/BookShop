@@ -56,13 +56,20 @@ namespace BookShopWeb.Areas.Admin.Controllers
                 orderHeader.TrackingNumber = order.TrackingNumber;
                 orderHeader.OrderStatus = "Shipped";
                 orderHeader.ShippingDate = DateTime.Now.AddDays(2);
+
+                TempData["success"] = "Carrier Assigned";
+
             }
-            
+
             else if (orderHeader.OrderStatus == "Shipped")
             {
                 orderHeader.OrderStatus = "Delivered";
                 orderHeader.ShippingDate = DateTime.Now;
+
+                TempData["success"] = " Product Delivered";
+
             }
+
 
             _unitOfWork.OrderHeaders.Update(orderHeader);
             _unitOfWork.Save();
