@@ -125,7 +125,7 @@
 
                             @if(Model.OrderStatus!="Cancelled"){
                                 <div class="row">
-                                    @if (Model.OrderStatus != "Shipped")
+                                    @if (Model.OrderStatus == "Processing")
                                     {
                                         <div class="col-6">
                                             <a asp-area="Customer" asp-controller="MyOrder" asp-action="CancelOrder" asp-route-id="@Model.ID" class="btn btn-info">Cancel Order</a>

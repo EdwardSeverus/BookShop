@@ -21,7 +21,7 @@ namespace BookShopWeb.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<OrderHeader> orderHeader = _unitOfWork.OrderHeaders.GetAll().OrderByDescending(u => u.OrderDate).Where(x => x.OrderStatus == "Cancelled");
+            IEnumerable<OrderHeader> orderHeader = _unitOfWork.OrderHeaders.GetAll().OrderByDescending(u => u.OrderDate).Where(x => x.OrderStatus == "Cancelled" && x.PaymentStatus=="Paid");
             return View(orderHeader);
         }
 

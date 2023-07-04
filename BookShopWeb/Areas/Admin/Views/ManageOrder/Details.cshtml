@@ -168,10 +168,14 @@
                                     <p class="text-end" style="padding-top:9px">Product is already delivered</p>
 
                                 }
-                                else
+                                else if(Model.OrderStatus == "In Processing")
                                 {
                                     <button type="submit" class="btn btn-primary form-control">Assign Carrier</button>
 
+                                }
+                                else
+                                {
+                                    <p class="text-end">Order Is Cancelled</p>
                                 }
 
                             }
