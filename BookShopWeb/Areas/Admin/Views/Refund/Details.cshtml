@@ -1,6 +1,4 @@
 ﻿@model BookShop.Models.ViewModels.OrderVM
-@using Microsoft.Extensions.Options
-@inject IOptions<BookShop.Utility.StripeSetting> Stripe
 
 
 <form method="post" asp-action="details">
@@ -11,11 +9,13 @@
                 <div class="card-header  ml-0 ">
                     <div class="row">
                         <div class="col-6 text-primary" style="font-size: 20px">
-                            <i class="bi bi-cart-fill"></i> &nbsp;
-                            Order Details
+                            <i class="bi bi-truck"></i> &nbsp;
+                            Shipping
                         </div>
 
-
+                        <div class="col-6 text-end">
+                            <a asp-area="Admin" asp-controller="ManageOrder" asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -52,15 +52,17 @@
                                                 </tr>
 
                                                         @{
-                                                            if (Model.OrderStatus == "Shipped")
+                                                            if (Model.OrderStatus == "Shipped" || Model.OrderStatus == "Delivered")
                                                             {
                                                         <tr>
                                                             <th>Carrier</th>
                                                             <td>@Model.Carrier</td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Tracing Number</th>
-                                                            <td>@Model.TrackingNumber</td>
+                                                            <th>Tracking Id</th>
+                                                            <td>
+                                                                        @Model.TrackingNumber
+                                                            </td>
                                                         </tr>
                                                             }
                                                         }
@@ -68,7 +70,39 @@
                                             </tbody>
                                         </table>
 
+
+                                        @{
+                                            if (Model.PaymentStatus == "Paid")
+                                            {
+                                                if (Model.OrderStatus == "Processing")
+                                                {
+                                                    <div class="row my-1">
+                                                        <div class="col-3">
+                                                            <label><strong>Carrier</strong></label>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <input asp-for="Carrier" type="text" class="form-control" />
+                                                            <span asp-validation-for="Carrier" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row my-1">
+                                                        <div class="col-3">
+                                                            <label><strong>Tracking Number</strong></label>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <input asp-for="TrackingNumber" type="text" class="form-control" />
+                                                            <span asp-validation-for="TrackingNumber" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                            }
+                                        }
+
+                                        <br />
                                         <strong>Shipping Address: </strong> @Model.Address
+
                                     </div>
 
                                 </div>
@@ -120,34 +154,18 @@
 
 
                         </div>
-
                         <div class="col-12 col-md-4">
 
-                            @if(Model.OrderStatus!="Cancelled"){
-                                <div class="row">
-                                    @if (Model.OrderStatus != "Shipped")
-                                    {
-                                        <div class="col-6">
-                                            <a asp-area="Customer" asp-controller="MyOrder" asp-action="CancelOrder" asp-route-id="@Model.ID" class="btn btn-info">Cancel Order</a>
-                                        </div>
-                                    }
-                                    <div class="col-6 text-end">
-                                        @if (Model.PaymentStatus == "Pending")
-                                        {
-                                            <button type="submit" class="btn btn-primary form-control">Pay Now</button>
+                            @if (Model.OrderStatus != "Refunded")
+                            {
 
-                                        }
-                                        else
-                                        {
-                                            @Html.ActionLink("Continue Shopping", "Index", "Home", null, new { @class = "btn btn-primary form-control" })
-
-
-                                        }
-                                    </div>
-                                </div>
+                                    <button type="submit" class="btn btn-primary form-control">Refund Order</button>
 
                             }
-                            
+                            else
+                            {
+                                <p class="text-end" style="padding-top:9px">Wait for the customer to pay</p>
+                            }
                         </div>
                     </div>
                 </div>

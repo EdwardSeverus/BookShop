@@ -113,5 +113,18 @@ namespace BookShopWeb.Areas.Customer.Controllers
             TempData["success"] = "Payment Successful";
             return RedirectToAction("Index");
         }
+
+
+        public IActionResult CancelOrder(int id) 
+        {
+            OrderHeader orderHeader= _unitOfWork.OrderHeaders.GetFirstOrDefault(u=>u.Id == id);
+            orderHeader.OrderStatus = "Cancelled";
+            orderHeader.IsCancelled = "1";
+            _unitOfWork.OrderHeaders.Update(orderHeader) ;
+            _unitOfWork.Save();
+            return RedirectToAction("Index");
+
+        }
+
     }
 }

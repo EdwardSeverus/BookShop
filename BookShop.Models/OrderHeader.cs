@@ -37,6 +37,8 @@ namespace BookShop.Models
         public string? SessionId { get; set; }
         public string? PaymentIntentId { get;set; }
 
+        public string IsCancelled { get; set; }
+
         [Required]
         [DisplayName("Phone Number")]
         public string PhoneNumber { get; set;}
@@ -49,5 +51,9 @@ namespace BookShop.Models
         [Required]
         public string PostalCode { get; set; }
 
+        public OrderHeader()
+        {
+            IsCancelled = "0";
+        }
     }
 }

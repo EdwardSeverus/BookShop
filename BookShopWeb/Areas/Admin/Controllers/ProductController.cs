@@ -139,11 +139,15 @@ namespace BookShopWeb.Areas.Admin.Controllers
         {
             ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
 
+
+            IEnumerable<OrderHeader> cancelledOrderHeaders = _unitOfWork.OrderHeaders.GetAll().Where(h => h.OrderStatus == "Cancelled");
+            IEnumerable<int> cancelledOrderIds = cancelledOrderHeaders.Select(h => h.Id);
+
             IEnumerable<OrderDetails> orderDetails = _unitOfWork.OrderDetails.GetAll(includeProperties: "Product");
 
             
             var productCounts = orderDetails
-                .Where(d => d.Product.ApplicationUserId == applicationUser.Id) // Filter by matching userId
+                .Where(d => d.Product.ApplicationUserId == applicationUser.Id && !cancelledOrderIds.Contains(d.OrderId)) // Filter by matching userId
                 .GroupBy(d => d.ProductId)
                 .Select(g => new ProductCountViewModel
                 {

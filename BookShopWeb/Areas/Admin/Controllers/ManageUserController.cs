@@ -34,8 +34,16 @@ namespace BookShopWeb.Areas.Admin.Controllers
 
             string userId = user.Id;
                 ApplicationUser userFromdb =await _userManager.FindByIdAsync(userId);
-            
-                var result = _userManager.DeleteAsync(userFromdb).Result;
+
+            if (userFromdb.FirstName == "Abdullah")
+            {
+                TempData["error"] = "You can't delete primary Admin";
+                return RedirectToAction("Index");
+
+
+            }
+            var result = _userManager.DeleteAsync(userFromdb).Result;
+
                 if (result.Succeeded)
                 {
                     TempData["success"] = "User Deleted Succesfully";
