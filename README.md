@@ -38,7 +38,7 @@ BookShop offers a range of features to enhance the user experience and streamlin
 ## Screenshot
 
 ![allProduct](./allProduct.png) ![homepage1](./homepage1.png)
-![homepage2](./homepage2.png) ![login](./login.png)
+![homepage2](./honmepage2.png) ![login](./login.png)
 ![orderList](./orderList.png) ![orderManage](./orderManage.png)
 ![payment](./payment.png) ![placeorder](./placeorder.png)
 
