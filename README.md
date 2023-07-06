@@ -7,13 +7,20 @@ Welcome to BookShop, an online platform that connects book lovers and bookstores
 
 BookShop offers a range of features to enhance the user experience and streamline the book purchasing process. Here are the key features of the application:
 
+## Roles:
+- Admin
+- Seller
+- Buyer
+
+Admin can create extra roles
+
 ### Admin Features
 
 - Add Categories: Admins can easily add new book categories to maintain a well-organized catalog.
 - Manage Products: Admins have the ability to add new books to the platform with details like title, author, description, and price.
 - Order Management: Admins can efficiently manage customer orders, track their status, and update shipping information.
 - Refund Orders: In case of cancellations or returns, admins can process refunds seamlessly.
-
+- Mange User: Admin can edit, delete user and change their roll
 ### User Features
 
 - Browse Products: Users can explore a diverse collection of books conveniently categorized for easy navigation.
