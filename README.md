@@ -1,7 +1,7 @@
 # BookShop
 
 
-Welcome to BookShop, an online platform that connects book lovers, authors, and bookstores in one convenient place!
+Welcome to BookShop, an online platform that connects book lovers and bookstores in one convenient place!
 
 ## Features
 
