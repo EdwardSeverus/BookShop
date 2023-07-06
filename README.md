@@ -54,7 +54,7 @@ We welcome contributions to enhance BookShop and make it even better. If you hav
 
 If you have any questions or suggestions, feel free to reach out:
 
-- Author: Your Name
+- Author: Abdulla Rahman
 - Email: [abdulla30r@gmail.com](mailto:abdulla30r@gmail.com)
 
 Let's build a thriving literary community together!
