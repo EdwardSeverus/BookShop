@@ -35,6 +35,14 @@ BookShop offers a range of features to enhance the user experience and streamlin
 - SQL Server
 - Bootstrap
 
+## Screenshot
+
+| ![allProduct](./allProduct.png) | ![homepage1](./homepage1.png) |
+| ![homepage2](./homepage2.png) | ![login](./login.png) |
+| ![orderList](./orderList.png) | ![orderManage](./orderManage.png) |
+| ![payment](./payment.png) | ![placeorder](./placeorder.png) |
+
+
 ## Getting Started
 
 To get started with BookShop, follow these steps:
